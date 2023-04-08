@@ -4,6 +4,7 @@ import lombok.Value;
 
 @Value
 public class CreateMovie {
+
     String title;
     Genre genre;
 }
