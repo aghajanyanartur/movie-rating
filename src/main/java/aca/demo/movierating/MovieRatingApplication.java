@@ -16,20 +16,6 @@ public class MovieRatingApplication {
 
 	public static void main(String[] args) {
 
-		var applicationContext = SpringApplication.run(MovieRatingApplication.class, args);
-
-		var movieService = applicationContext.getBean(MovieService.class);
-
-		movieService.create(new CreateMovie("Forrest Gump", Genre.DRAMA));
-		movieService.create(new CreateMovie("Horrible Bosses", Genre.COMEDY));
-		movieService.create(new CreateMovie("American Beauty", Genre.DRAMA));
-
-		List<Movie> dramas = movieService.search(Genre.DRAMA);
-		log.debug("Drama movies found - {}", dramas);
-
-		List<Movie> romances = movieService.search(Genre.ROMANCE);
-		log.debug("Romance movies found - {}", romances);
-
-		movieService.create(new CreateMovie("Forrest Gump", Genre.COMEDY));
+		SpringApplication.run(MovieRatingApplication.class, args);
 	}
 }
