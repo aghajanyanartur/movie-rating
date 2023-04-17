@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +31,8 @@ public class MovieController {
 
         movieService.create(new CreateMovie(title, Genre.valueOf(genre)));
 
-        response.setStatus(200);
-        response.setContentType("text/plain");
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType(MediaType.TEXT_PLAIN_VALUE);
         response.getWriter().println("New Movie Created");
     }
 
@@ -41,8 +43,8 @@ public class MovieController {
 
         var searchResults = movieService.search(Genre.valueOf(genre));
 
-        response.setStatus(200);
-        response.setContentType("text/plain");
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType(MediaType.TEXT_PLAIN_VALUE);
         for(Movie movie : searchResults) {
             response.getWriter().println(movie);
         }
