@@ -3,6 +3,7 @@ package aca.demo.movierating.movie;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +19,15 @@ public class MovieRepository {
         return movies.stream().filter(m -> m.getId().equals(id)).findFirst();
     }
 
-    public List<Movie> findByGenre(Genre genre) {
-        log.debug("Finding movies by title - {}", genre);
-        return movies.stream().filter(m -> m.getGenre() == genre).toList();
+    public List<Movie> search(Genre genre, String title, LocalDate releasedBefore, LocalDate releasedAfter) {
+        log.debug("Finding movies by parameters - genre: {}, title: {}, releasedBefore: {}, releasedAfter: {}",
+                genre, title, releasedBefore, releasedAfter);
+        return movies.stream()
+                .filter(m -> m.getGenre() == genre || genre == null
+                        && m.getTitle().equals(title) || title == null
+                        && m.getReleasedAt().isBefore(releasedBefore) || releasedBefore == null
+                        && m.getReleasedAt().isAfter(releasedAfter) || releasedAfter == null)
+                .toList();
     }
 
     public void persist(Movie movie) {
