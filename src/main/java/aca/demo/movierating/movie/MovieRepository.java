@@ -23,10 +23,10 @@ public class MovieRepository {
         log.debug("Finding movies by parameters - genre: {}, title: {}, releasedBefore: {}, releasedAfter: {}",
                 genre, title, releasedBefore, releasedAfter);
         return movies.stream()
-                .filter(m -> m.getGenre() == genre || genre == null
-                        && m.getTitle().equals(title) || title == null
-                        && m.getReleasedAt().isBefore(releasedBefore) || releasedBefore == null
-                        && m.getReleasedAt().isAfter(releasedAfter) || releasedAfter == null)
+                .filter(m -> genre == null || m.getGenre() == genre)
+                .filter(m -> title == null || m.getTitle().equals(title))
+                .filter(m -> releasedBefore == null || m.getReleasedAt().isBefore(releasedBefore))
+                .filter(m -> releasedAfter == null || m.getReleasedAt().isAfter(releasedAfter))
                 .toList();
     }
 
@@ -37,6 +37,6 @@ public class MovieRepository {
 
     public void delete(Movie movie) {
         log.debug("Deleting movie from list - {}", movie);
-        movies.remove(findById(movie.getId()).get());
+        movies.remove(findById(movie.getId()).get()); // Presence of the movie is checked in MovieService
     }
 }
