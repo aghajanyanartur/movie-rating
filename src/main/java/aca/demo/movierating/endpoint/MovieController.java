@@ -1,52 +1,55 @@
 package aca.demo.movierating.endpoint;
 
-import aca.demo.movierating.movie.CreateMovie;
-import aca.demo.movierating.movie.Genre;
-import aca.demo.movierating.movie.Movie;
-import aca.demo.movierating.movie.MovieService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import aca.demo.movierating.movie.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
-@Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class MovieController {
 
     private final MovieService movieService;
 
-    @PostMapping("movies")
-    public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String title = request.getParameter("title");
-        String genre = request.getParameter("genre").toUpperCase();
-        log.info("Title - {}, genre - {}", title, genre);
-
-        movieService.create(new CreateMovie(title, Genre.valueOf(genre)));
-
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.TEXT_PLAIN_VALUE);
-        response.getWriter().println("New Movie Created");
+    @GetMapping("/movies/{id}")
+    public Movie getById(@PathVariable Long id) {
+        log.debug("Endpoint getting movie by path variable id - {}", id);
+        return movieService.getById(id);
     }
 
-    @GetMapping("movies")
-    public void search(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String genre = request.getParameter("genre").toUpperCase();
-        log.info("Genre - {}", genre);
+    @PostMapping("/movies")
+    public ResponseEntity create(CreateMovie createMovie) {
+        log.debug("Endpoint creating a new movie - {}", createMovie);
+        movieService.create(createMovie);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    }
 
-        var searchResults = movieService.search(Genre.valueOf(genre));
+    @PutMapping("/movies/{id}")
+    public void update(@PathVariable Long id, UpdateMovie updateMovie) {
+        log.debug("Endpoint updating a movie using path variable id - {}, and updateMovie - {}", id, updateMovie);
+        movieService.update(id, updateMovie);
+    }
 
-        response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.TEXT_PLAIN_VALUE);
-        for(Movie movie : searchResults) {
-            response.getWriter().println(movie);
-        }
+    @DeleteMapping("/movies/{id}")
+    public void delete(@PathVariable Long id) {
+        log.debug("Endpoint deleting a movie using path variable id - {}", id);
+        movieService.delete(id);
+    }
+
+    @GetMapping("/movies")
+    List<Movie> search(@RequestParam(required = false) Genre genre,
+                       @RequestParam(required = false) String title,
+                       @RequestParam(required = false) LocalDate releasedBefore,
+                       @RequestParam(required = false) LocalDate releasedAfter) {
+
+        log.debug("Endpoint searching for a movie using parameters - genre: {}, title: {}, releasedBefore: {}," +
+                        "releasedAfter: {}", genre, title, releasedBefore, releasedAfter);
+        return movieService.search(genre, title, releasedBefore, releasedAfter);
     }
 }
