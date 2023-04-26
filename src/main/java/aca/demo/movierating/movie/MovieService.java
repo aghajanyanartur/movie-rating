@@ -17,13 +17,7 @@ public class MovieService {
 
     public Movie getById(Long id) {
         log.debug("MovieService getting movie by id - {}", id);
-        var movie = movieRepository.findById(id);
-
-        if(movie.isPresent()){
-            return movie.get();
-        } else {
-            throw new MovieNotFoundException(EXCEPTION_MESSAGE);
-        }
+        return movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(EXCEPTION_MESSAGE));
     }
 
     public List<Movie> search(Genre genre, String title, LocalDate releasedBefore, LocalDate releasedAfter) {
@@ -42,22 +36,10 @@ public class MovieService {
 
     public void update(Long id, UpdateMovie updateMovie) {
         log.debug("MovieService updating movie with updateMovie - {}", updateMovie);
-        var movie = movieRepository.findById(id);
-
-        if(movie.isPresent()){
-            movie.get().update(updateMovie);
-        } else {
-            throw new MovieNotFoundException(EXCEPTION_MESSAGE);
-        }
+        movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(EXCEPTION_MESSAGE)).update(updateMovie);
     }
     public void delete(Long id) {
         log.debug("MovieService deleting movie by id - {}", id);
-        var movie = movieRepository.findById(id);
-
-        if(movie.isPresent()){
-            movieRepository.delete(movie.get());
-        } else {
-            throw new MovieNotFoundException(EXCEPTION_MESSAGE);
-        }
+        movieRepository.delete(movieRepository.findById(id).orElseThrow(() -> new MovieNotFoundException(EXCEPTION_MESSAGE)));
     }
 }
