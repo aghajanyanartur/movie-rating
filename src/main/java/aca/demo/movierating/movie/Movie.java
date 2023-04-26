@@ -34,7 +34,6 @@ public class Movie {
 
     public void update(UpdateMovie updateMovie) {
         log.debug("Updating movie with updateMovie - {}", updateMovie);
-        this.id = updateMovie.getId();
         this.title = updateMovie.getTitle();
         this.genre = updateMovie.getGenre();
         this.releasedAt = updateMovie.getReleasedAt();
