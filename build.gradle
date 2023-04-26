@@ -25,6 +25,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	implementation 'org.webjars:webjars-locator-core'
+	implementation 'org.webjars:react:16.5.2'
+	implementation 'org.webjars.npm:react-dom:16.5.2'
+	implementation 'org.webjars.npm:js-tokens:4.0.0'
+	implementation 'org.webjars.npm:axios:0.24.0'
 }
 
 tasks.named('test') {
