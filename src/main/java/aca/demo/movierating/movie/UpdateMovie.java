@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Jacksonized
 public class UpdateMovie {
 
-    Long id;
     String title;
     Genre genre;
     LocalDate releasedAt;
