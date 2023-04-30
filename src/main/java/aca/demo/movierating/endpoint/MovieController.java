@@ -24,14 +24,14 @@ public class MovieController {
     }
 
     @PostMapping("/movies")
-    public ResponseEntity create(CreateMovie createMovie) {
+    public ResponseEntity create(@RequestBody CreateMovie createMovie) {
         log.debug("Endpoint creating a new movie - {}", createMovie);
         movieService.create(createMovie);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @PutMapping("/movies/{id}")
-    public void update(@PathVariable Long id, UpdateMovie updateMovie) {
+    public void update(@PathVariable Long id, @RequestBody UpdateMovie updateMovie) {
         log.debug("Endpoint updating a movie using path variable id - {}, and updateMovie - {}", id, updateMovie);
         movieService.update(id, updateMovie);
     }
