@@ -6,6 +6,30 @@
 </head>
 <body>
 
+<script>
+    var images = [
+        "https://c4.wallpaperflare.com/wallpaper/570/702/346/joaquin-phoenix-joker-batman-joker-2019-movie-dark-hd-wallpaper-preview.jpg",
+        "https://cdn.fansshare.com/photo/quentintarantino/quentin-tarantino-pulp-fiction-wallpaper-hd-wallpaper-885729692.jpg",
+        "https://mcdn.wallpapersafari.com/medium/39/19/9cYnsy.jpg",
+        "https://wallpaperaccess.com/full/1091819.jpg",
+        "https://mcdn.wallpapersafari.com/medium/9/38/VbzWmJ.jpg",
+        "https://rare-gallery.com/uploads/posts/125816-daenerys-targaryen-emilia-clarke-game-of-thrones-4k-8k.jpg",
+        "https://free4kwallpapers.com/uploads/originals/2016/02/04/breaking-bad-walter-white--black---white-wallpaper.jpg",
+    ];
+    var currentIndex = 0;
+
+    function changeBackgroundImage() {
+        var bodyElem = document.getElementsByTagName("body")[0];
+        bodyElem.style.backgroundImage = "url(" + images[currentIndex] + ")";
+        bodyElem.classList.add("change-background");
+
+        currentIndex = (currentIndex + 1) % images.length;
+    }
+
+    setInterval(changeBackgroundImage, 7000);
+    changeBackgroundImage();
+</script>
+
 <div id="logo">Movie Rating</div>
 
 <h3>Create and save movies</h3>

@@ -48,11 +48,18 @@ function fetchMovieData() {
             const clearButton = React.createElement('button', { onClick: clearMovieData }, 'Close');
             const deleteButton = React.createElement('button', { onClick: deleteMovieData }, 'Delete Movie');
             const updateButton = React.createElement('button', { onClick: showUpdateForm }, 'Update Movie');
+            const reviewButton = React.createElement('button', { onClick: getReviews }, 'See Reviews');
+            const addReviewButton = React.createElement('button', { onClick: showReviewForm }, 'Add Review');
+            const reviewFormContainer = React.createElement('div', { id: 'reviewFormContainer' });
+
             const movieDataContainer = React.createElement('div', null,
                   movieDataElement,
                   clearButton,
                   deleteButton,
-                  updateButton
+                  updateButton,
+                  reviewButton,
+                  addReviewButton,
+                  reviewFormContainer
             );
             ReactDOM.render(movieDataContainer, document.getElementById('movieDataContainer'));
         })
@@ -62,6 +69,83 @@ function fetchMovieData() {
                 alert('Movie not found!');
             }
         });
+}
+
+function showReviewForm() {
+    const reviewForm = React.createElement('form', { onSubmit: submitReview },
+        React.createElement('input', { type: 'number', id: 'reviewId', placeholder: 'Review id', required: true }),
+        React.createElement('input', { type: 'number', id: 'userId', placeholder: 'User id', required: true }),
+        React.createElement('textarea', { id: 'comment', placeholder: 'Add your review here', required: true }),
+        React.createElement('textarea', { id: 'reviewRating', placeholder: 'Rating', min: 0, max: 10, step: 0.1, required: false  }),
+        React.createElement('button', { type: 'submit' }, 'Submit')
+    );
+
+    ReactDOM.render(reviewForm, document.getElementById('reviewFormContainer'));
+}
+
+function submitReview(event) {
+    event.preventDefault();
+
+    const id = document.getElementById('reviewId').value;
+    const movieId = document.getElementById('movieId').value;
+    const userId = document.getElementById('userId').value;
+    const description = document.getElementById('comment').value;
+    const rating = document.getElementById('reviewRating').value;
+
+    fetch(`/movies/${movieId}/reviews`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, movieId, userId, description, rating })
+    })
+    .then(() => {
+        clearReviewForm();
+        alert('Review added successfully!');
+    })
+    .catch((error) => {
+        console.error('Error adding review:', error);
+    });
+}
+
+function clearReviewForm() {
+    ReactDOM.unmountComponentAtNode(document.getElementById('reviewFormContainer'));
+}
+
+
+function getReviews() {
+    const id = document.getElementById('movieId').value;
+
+    fetch(`/movies/${id}/reviews`)
+        .then(response => {
+            if (!response.ok) {
+               throw new Error(response.status);
+            }
+            return response.json();
+        })
+        .then((reviewsData) => {
+            const reviewsList = reviewsData.map((review) => {
+                return React.createElement('li', null, `${review.username}: ${review.comment}`);
+            });
+
+            const reviewsContainer = React.createElement('div', null,
+                React.createElement('h2', null, 'Reviews'),
+                React.createElement('ul', null, reviewsList),
+                React.createElement('button', { onClick: clearReviews }, 'Close')
+            );
+
+            ReactDOM.render(reviewsContainer, document.getElementById('reviewsContainer'));
+        })
+        .catch((error) => {
+            console.error('Error fetching reviews data:', error);
+            if (error.message === "500") {
+                alert('No reviews found!');
+            }
+        });
+}
+
+function clearReviews() {
+    ReactDOM.unmountComponentAtNode(document.getElementById('reviewsContainer'));
 }
 
 function clearMovieData() {
@@ -92,9 +176,6 @@ function deleteMovieData() {
       document.getElementById('movieId').value = '';
   }
 }
-
-// UPDATE
-
 
 const updateForm = React.createElement('form', { onSubmit: updateMovieData },
 
