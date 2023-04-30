@@ -2,7 +2,6 @@ package aca.demo.movierating.review;
 
 import aca.demo.movierating.movie.MovieNotFoundException;
 import aca.demo.movierating.movie.MovieRepository;
-import aca.demo.movierating.movie.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class ReviewService {
 
     public List<Review> search(Long movieId, Long userId) {
         log.debug("ReviewService searching reviews by parameters - movieId: {}, userId: {}", movieId, userId);
-        if(!movieRepository.findById(movieId).isPresent()) {
+        if(movieRepository.findById(movieId).isEmpty()) {
             throw new MovieNotFoundException(EXCEPTION_MESSAGE_MOVIE);
         }
         return reviewRepository.search(movieId, userId);
