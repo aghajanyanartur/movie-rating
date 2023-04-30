@@ -15,6 +15,5 @@ public class UpdateReview {
     Long userId;
     String description;
     double rating;
-    Instant createdAt;
     Instant updatedAt;
 }
