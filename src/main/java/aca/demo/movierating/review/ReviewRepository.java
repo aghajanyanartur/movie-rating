@@ -3,6 +3,7 @@ package aca.demo.movierating.review;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +19,16 @@ public class ReviewRepository {
         return reviews.stream().filter(r -> r.getId().equals(id)).findFirst();
     }
 
-    public List<Review> search(Long movieId, Long userId) {
-        log.debug("Finding reviews by parameters - movieId: {}, userId: {}", movieId, userId);
+    public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
+        log.debug("Finding reviews by parameters - description: {}, updatedBefore: {}, updatedAfter: {}, userId: {}, ratingHigherThan: {}, ratingLowerThan: {}",
+                description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
         return reviews.stream()
-                .filter(r -> movieId == null || r.getMovieId().equals(movieId))
-                .filter(r -> userId == null || r.getUserId().equals(userId))
+                .filter(review -> description == null || review.getDescription().equals(description))
+                .filter(review -> updatedBefore == null || review.getUpdatedAt().isBefore(updatedBefore))
+                .filter(review -> updatedAfter == null || review.getUpdatedAt().isAfter(updatedAfter))
+                .filter(review -> userId == null || review.getUserId().equals(userId))
+                .filter(review -> ratingHigherThan == 0.0 || Double.compare(review.getRating(), ratingHigherThan) == 1)
+                .filter(review -> ratingLowerThan == 0.0 || Double.compare(review.getRating(), ratingLowerThan) == -1)
                 .toList();
     }
 

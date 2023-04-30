@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -14,21 +15,17 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final MovieRepository movieRepository;
     private static final String EXCEPTION_MESSAGE_REVIEW = "Review not found";
-    private static final String EXCEPTION_MESSAGE_MOVIE = "Movie not found";
 
     public Review getById(Long id) {
         log.debug("ReviewService getting review by id - {}", id);
         return reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW));
     }
 
-    public List<Review> search(Long movieId, Long userId) {
-        log.debug("ReviewService searching reviews by parameters - movieId: {}, userId: {}", movieId, userId);
-        if(movieRepository.findById(movieId).isEmpty()) {
-            throw new MovieNotFoundException(EXCEPTION_MESSAGE_MOVIE);
-        }
-        return reviewRepository.search(movieId, userId);
+    public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
+        log.debug("ReviewService searching reviews by parameters - description: {}, updatedBefore: {}, updatedAfter: {}, userId: {}, ratingHigherThan: {}, ratingLowerThan: {}",
+                description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
+        return reviewRepository.search(description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
     }
 
     public void create(CreateReview createReview) {
