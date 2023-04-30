@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+/* Style for body element */
+body {
+font-family: Arial, sans-serif;
+background-color: #000;
+background-image: url("https://c4.wallpaperflare.com/wallpaper/570/702/346/joaquin-phoenix-joker-batman-joker-2019-movie-dark-hd-wallpaper-preview.jpg");
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+#logo {
+  font-family: 'Varela Round', sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  color: #f5c518;
+  width: 310px;
+  height: 70px;
+  text-align: center;
+  line-height: 70px;
+  border: 8px solid #f5c518;
+  border-radius: 15px;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #f5c518;
+}
+
+/* Style for every block */
+.block {
+border: 1px solid #ffb347;
+background-color: rgba(255, 215, 0, 0.4);
+margin-bottom: 20px;
+padding: 10px;
+display: inline-block;
+vertical-align: top;
+border-radius: 10px;
+}
+
+/* Style for input fields */
+input {
+display: inline;
+margin: 10px;
+padding: 5px;
+font-size: 16px;
+border-radius: 5px;
+border: 1px solid #ffa500;
+background-color: #fff8dc;
+}
+
+#id {
+width: 100px;
+}
+
+/* Style for select element */
+select {
+display: inline;
+margin: 10px;
+padding: 5px;
+font-size: 16px;
+border-radius: 5px;
+border: 1px solid #ffa500;
+background-color: #fff8dc;
+}
+
+/* Style for create button */
+button {
+padding: 10px;
+background-color: #f59000;
+color: #000;
+font-size: 16px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+/* Style for search button */
+#searchForm button {
+padding: 10px;
+background-color: #f59000;
+color: #000;
+font-size: 16px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+#searchResults {
+    color: #fff
+}
+
+/* Style for container */
+.container {
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+}
+
+/* Style for search container */
+#searchForm {
+margin-bottom: 20px;
+}
+
+/* Style for search results */
+#searchResults {
+margin-top: 20px;
+}
+
+/* Style for movie list */
+#movie-list {
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
+/* Style for movie list item */
+.movie-item {
+margin-bottom: 20px;
+padding: 10px;
+border: 1px solid #ffa500;
+border-radius: 5px;
+background-color: #fff8dc;
+}
+
+/* Style for movie title */
+.movie-title {
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+/* Style for movie detail */
+.movie-detail {
+font-size: 16px;
+margin-bottom: 5px;
+}
+
+/* Style for error message */
+.error {
+color: #ff4500;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+/* Table of movies */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 1em;
+  font-family: Arial, sans-serif;
+}
+
+thead {
+  background-color: #f5c518;
+  color: #000;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th:first-child,
+td:first-child {
+  padding-left: 0;
+}
+
+th:last-child,
+td:last-child {
+  padding-right: 0;
+}
+
+tbody tr:hover {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+tbody td::before {
+  content: attr(data-label);
+  font-weight: bold;
+  display: inline-block;
+  width: 120px;
+}
+
+tbody td {
+  text-align: left;
+}
