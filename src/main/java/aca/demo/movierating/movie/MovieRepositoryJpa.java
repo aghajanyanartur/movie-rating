@@ -24,21 +24,26 @@ public class MovieRepositoryJpa implements MovieRepository{
 
     @Transactional(readOnly = true)
     public Optional<Movie> findById(Long id) {
+        log.debug("Finding movie by id - {}", id);
         return Optional.ofNullable(entityManager.find(Movie.class, id));
     }
 
     @Transactional
     public void persist(Movie movie) {
+        log.debug("Adding new movie to movies list with movie - {}", movie);
         entityManager.persist(movie);
     }
 
     @Transactional
     public void delete(Movie movie) {
+        log.debug("Deleting movie from list - {}", movie);
         entityManager.remove(movie);
     }
 
     @Transactional(readOnly = true)
     public List<Movie> search(Genre genre, String title, LocalDate releasedBefore, LocalDate releasedAfter) {
+        log.debug("Finding movies by parameters - genre: {}, title: {}, releasedBefore: {}, releasedAfter: {}",
+                genre, title, releasedBefore, releasedAfter);
         var query = new StringBuilder();
         query.append("select m from Movie m ");
         class WhereClause<T> {

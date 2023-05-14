@@ -24,11 +24,14 @@ public class ReviewRepositoryJpa implements ReviewRepository{
 
     @Transactional(readOnly = true)
     public Optional<Review> findById(Long id) {
+        log.debug("Finding review by reviewId: {}", id);
         return Optional.ofNullable(entityManager.find(Review.class, id));
     }
 
     @Transactional
     public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
+        log.debug("Finding reviews by parameters - description: {}, updatedBefore: {}, updatedAfter: {}, userId: {}, ratingHigherThan: {}, ratingLowerThan: {}",
+                description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
         var query = new StringBuilder();
         query.append("select r from Review r ");
         class WhereClause<T> {
@@ -69,11 +72,13 @@ public class ReviewRepositoryJpa implements ReviewRepository{
 
     @Transactional
     public void persist(Review review) {
+        log.debug("Adding new review to reviews list - {}", review);
         entityManager.persist(review);
     }
 
     @Transactional
     public void delete(Review review) {
+        log.debug("Deleting review from list - {}", review);
         entityManager.remove(review);
     }
 }
