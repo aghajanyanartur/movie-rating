@@ -11,9 +11,9 @@ import java.util.List;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Qualifier
 public class MovieService {
 
+    @Qualifier("movieRepositoryJpa")
     private final MovieRepository movieRepository;
     private static final String EXCEPTION_MESSAGE = "Movie not found";
 
