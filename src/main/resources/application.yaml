@@ -4,8 +4,8 @@ logging:
 spring:
   datasource:
     url: jdbc:postgresql://127.0.0.1:5432/aca
-    username: aca
-    password: aca
+    username: postgres
+    password: 12345
     driver-class-name: org.postgresql.Driver
     hikari:
       max-lifetime: 580000
