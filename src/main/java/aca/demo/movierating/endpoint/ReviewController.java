@@ -28,22 +28,22 @@ public class ReviewController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> create(@PathVariable Long movieId, @RequestBody CreateReview createReview) {
+    public ResponseEntity<Void> create(@RequestBody CreateReview createReview) {
         log.debug("Endpoint creating new review with createReview - {}", createReview);
-        reviewService.create(movieId, createReview);
+        reviewService.create(createReview);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @PutMapping("/")
-    public void update(@PathVariable Long movieId, @PathVariable Long id, @RequestBody UpdateReview updateReview) {
-        log.debug("Endpoint updating a review using path variables - movieId: {} and reviewId: {}, and updateReview: {}", movieId, id, updateReview);
-        reviewService.update(movieId, id, updateReview);
+    public void update(@PathVariable Long id, @RequestBody UpdateReview updateReview) {
+        log.debug("Endpoint updating a review using path variables - reviewId: {}, and updateReview: {}", id, updateReview);
+        reviewService.update(id, updateReview);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long movieId, @PathVariable Long id) {
-        log.debug("Endpoint deleting the review with path variables - movieId: {} and reviewId: {}", movieId, id);
-        reviewService.delete(movieId, id);
+    public void delete(@PathVariable Long id) {
+        log.debug("Endpoint deleting the review with path variable reviewId: {}", id);
+        reviewService.delete(id);
     }
 
     @GetMapping("/")

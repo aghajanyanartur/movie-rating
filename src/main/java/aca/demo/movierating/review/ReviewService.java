@@ -20,11 +20,11 @@ public class ReviewService {
     private static final String EXCEPTION_MESSAGE_MOVIE = "Movie not found";
 
     public Review getById(Long movieId, Long reviewId) {
-        log.debug("ReviewService getting review by - movieId: {}, and reviewId: {}", reviewId);
+        log.debug("ReviewService getting review by reviewId: {}", reviewId);
         if(movieRepository.findById(movieId).isEmpty()){
             throw new MovieNotFoundException(EXCEPTION_MESSAGE_MOVIE);
         }
-        return reviewRepository.findById(movieId, reviewId).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW));
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW));
     }
 
     public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
@@ -33,21 +33,21 @@ public class ReviewService {
         return reviewRepository.search(description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
     }
 
-    public void create(Long movieId, CreateReview createReview) {
+    public void create(CreateReview createReview) {
         log.debug("ReviewService creating new review with createReview - {}", createReview);
-        if(reviewRepository.findById(movieId, createReview.getId()).isPresent()){
+        if(reviewRepository.findById(createReview.getId()).isPresent()){
             throw new IllegalArgumentException();
         }
         reviewRepository.persist(new Review(createReview));
     }
 
-    public void update(Long movieId, Long id, UpdateReview updateReview) {
+    public void update(Long id, UpdateReview updateReview) {
         log.debug("ReviewService updating review with updateReview - {}", updateReview);
-        reviewRepository.findById(movieId, id).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW)).update(updateReview);
+        reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW)).update(updateReview);
     }
 
-    public void delete(Long movieId, Long id) {
-        log.debug("ReviewService deleting review by - movieId {}, and id: {}", movieId, id);
-        reviewRepository.delete(movieId, reviewRepository.findById(movieId, id).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW)));
+    public void delete(Long id) {
+        log.debug("ReviewService deleting review by id: {}", id);
+        reviewRepository.delete(reviewRepository.findById(id).orElseThrow(() -> new ReviewNotFoundException(EXCEPTION_MESSAGE_REVIEW)));
     }
 }

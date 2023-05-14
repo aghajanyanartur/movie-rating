@@ -14,9 +14,9 @@ public class ReviewRepositoryInMemory implements ReviewRepository {
 
     private List<Review> reviews = new ArrayList<>();
 
-    public Optional<Review> findById(Long movieId, Long id) {
-        log.debug("Finding review by - movieId: {}, and reviewId: {}", movieId, id);
-        return reviews.stream().filter(r -> r.getMovieId().equals(movieId) && r.getId().equals(id)).findFirst();
+    public Optional<Review> findById(Long id) {
+        log.debug("Finding review by reviewId: {}", id);
+        return reviews.stream().filter(r -> r.getId().equals(id)).findFirst();
     }
 
     public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
@@ -37,8 +37,8 @@ public class ReviewRepositoryInMemory implements ReviewRepository {
         reviews.add(review);
     }
 
-    public void delete(Long movieId, Review review) {
+    public void delete(Review review) {
         log.debug("Deleting review from list - {}", review);
-        reviews.remove(findById(movieId, review.getId()).get()); // Presence of the movie is checked in ReviewService
+        reviews.remove(findById(review.getId()).get()); // Presence of the movie is checked in ReviewService
     }
 }
