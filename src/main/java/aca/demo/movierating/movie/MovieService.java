@@ -2,7 +2,6 @@ package aca.demo.movierating.movie;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -13,9 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieService {
 
-    @Qualifier("movieRepositoryJpa")
-    private final MovieRepository movieRepository;
     private static final String EXCEPTION_MESSAGE = "Movie not found";
+
+    private final MovieRepository movieRepository;
 
     public Movie getById(Long id) {
         log.debug("MovieService getting movie by id - {}", id);
