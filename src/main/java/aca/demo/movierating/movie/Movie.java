@@ -1,6 +1,9 @@
 package aca.demo.movierating.movie;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,9 +18,10 @@ import java.time.LocalDate;
 public class Movie {
 
     @EqualsAndHashCode.Include
+    @Id
     Long id;
-
     String title;
+    @Enumerated(EnumType.STRING)
     Genre genre;
     LocalDate releasedAt;
     String director;
