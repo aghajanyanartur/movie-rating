@@ -1,8 +1,8 @@
 package aca.demo.movierating.review;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
@@ -11,9 +11,12 @@ import java.time.Instant;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Slf4j
+@Entity
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class Review {
 
     @EqualsAndHashCode.Include
+    @Id
     Long id;
     Long movieId;
     Long userId;
