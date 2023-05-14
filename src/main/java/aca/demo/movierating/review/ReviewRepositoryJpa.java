@@ -30,7 +30,7 @@ public class ReviewRepositoryJpa implements ReviewRepository{
     @Transactional
     public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
         var query = new StringBuilder();
-        query.append("select r from review r ");
+        query.append("select r from Review r ");
         class WhereClause<T> {
             final String query;
             final String param;
@@ -44,7 +44,7 @@ public class ReviewRepositoryJpa implements ReviewRepository{
         }
         var whereClauses = new ArrayList<WhereClause>();
         if (description != null) {
-            whereClauses.add(new WhereClause("r.description = :description ", "description", description));
+            whereClauses.add(new WhereClause("r.description like :description ", "description", "%" + description + "%"));
         }
         if (updatedBefore != null) {
             whereClauses.add(new WhereClause("r.updatedBefore <= :updatedBefore ", "updatedBefore", updatedBefore));
@@ -55,8 +55,8 @@ public class ReviewRepositoryJpa implements ReviewRepository{
         if (userId != null) {
             whereClauses.add(new WhereClause("r.userId = :userId ", "userId", userId));
         }
-        whereClauses.add(new WhereClause("r.ratingHigherThan >= :ratingHigherThan ", "ratingHigherThan", ratingHigherThan));
-        whereClauses.add(new WhereClause("r.ratingLowerThan <= :ratingLowerThan ", "ratingLowerThan", ratingLowerThan));
+        whereClauses.add(new WhereClause("r.rating >= :ratingHigherThan ", "ratingHigherThan", ratingHigherThan));
+        whereClauses.add(new WhereClause("r.rating <= :ratingLowerThan ", "ratingLowerThan", ratingLowerThan));
 
         query.append("where ");
 
