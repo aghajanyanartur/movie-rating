@@ -1,3 +1,13 @@
 logging:
   level:
     root: debug
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/aca
+    username: aca
+    password: aca
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      max-lifetime: 580000
+  jpa:
+    show-sql: true
