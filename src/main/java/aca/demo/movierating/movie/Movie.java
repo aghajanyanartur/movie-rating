@@ -1,8 +1,7 @@
 package aca.demo.movierating.movie;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import jakarta.persistence.Entity;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -11,6 +10,8 @@ import java.time.LocalDate;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Slf4j
+@Entity
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class Movie {
 
     @EqualsAndHashCode.Include
