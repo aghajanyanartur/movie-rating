@@ -32,7 +32,7 @@ public class MovieRepositoryJpa implements MovieRepository{
         entityManager.persist(movie);
     }
 
-    @Override
+    @Transactional
     public void delete(Movie movie) {
         entityManager.remove(movie);
     }
