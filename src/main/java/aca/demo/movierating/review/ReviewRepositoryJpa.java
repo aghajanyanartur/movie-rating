@@ -6,13 +6,10 @@ import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -22,61 +19,57 @@ public class ReviewRepositoryJpa implements ReviewRepository{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(readOnly = true)
     public Optional<Review> findById(Long id) {
         log.debug("Finding review by reviewId: {}", id);
         return Optional.ofNullable(entityManager.find(Review.class, id));
     }
 
-    @Transactional
     public List<Review> search(String description, Instant updatedBefore, Instant updatedAfter, Long userId, double ratingHigherThan, double ratingLowerThan) {
         log.debug("Finding reviews by parameters - description: {}, updatedBefore: {}, updatedAfter: {}, userId: {}, ratingHigherThan: {}, ratingLowerThan: {}",
                 description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
         var query = new StringBuilder();
-        query.append("select r from Review r ");
-        class WhereClause<T> {
-            final String query;
-            final String param;
-            final T value;
+        query.append("select r from Review r where 1=1");
 
-            WhereClause(String query, String param, T value) {
-                this.query = query;
-                this.param = param;
-                this.value = value;
-            }
-        }
-        var whereClauses = new ArrayList<WhereClause>();
         if (description != null) {
-            whereClauses.add(new WhereClause("r.description like :description ", "description", "%" + description + "%"));
+            query.append("r.description like :description ");
         }
         if (updatedBefore != null) {
-            whereClauses.add(new WhereClause("r.updatedBefore <= :updatedBefore ", "updatedBefore", updatedBefore));
+            query.append("r.updatedBefore <= :updatedBefore ");
         }
         if (updatedAfter != null) {
-            whereClauses.add(new WhereClause("r.updatedAfter >= :updatedAfter ", "updatedAfter", updatedAfter));
+            query.append("r.updatedAfter >= :updatedAfter ");
         }
         if (userId != null) {
-            whereClauses.add(new WhereClause("r.userId = :userId ", "userId", userId));
+            query.append("r.userId = :userId ");
         }
-        whereClauses.add(new WhereClause("r.rating >= :ratingHigherThan ", "ratingHigherThan", ratingHigherThan));
-        whereClauses.add(new WhereClause("r.rating <= :ratingLowerThan ", "ratingLowerThan", ratingLowerThan));
+        query.append("r.rating >= :ratingHigherThan ");
+        query.append("r.rating <= :ratingLowerThan ");
 
-        query.append("where ");
-
-        var whereClause = whereClauses.stream().map(w -> w.query).collect(Collectors.joining(" and "));
-        query.append(whereClause);
         TypedQuery<Review> managerQuery = entityManager.createQuery(query.toString(), Review.class);
-        whereClauses.forEach(w -> managerQuery.setParameter(w.param, w.value));
+        if (description != null) {
+            managerQuery.setParameter("description", "%" + description + "%");
+        }
+        if (updatedBefore != null) {
+            managerQuery.setParameter("updatedBefore", updatedBefore);
+        }
+        if (updatedAfter != null) {
+            managerQuery.setParameter("updatedAfter", updatedAfter);
+        }
+        if (userId != null) {
+            managerQuery.setParameter("userId", userId);
+        }
+
+        managerQuery.setParameter("ratingHigherThan", ratingHigherThan);
+        managerQuery.setParameter("ratingLowerThan", ratingLowerThan);
+
         return managerQuery.getResultList();
     }
 
-    @Transactional
     public void persist(Review review) {
         log.debug("Adding new review to reviews list - {}", review);
         entityManager.persist(review);
     }
 
-    @Transactional
     public void delete(Review review) {
         log.debug("Deleting review from list - {}", review);
         entityManager.remove(review);
