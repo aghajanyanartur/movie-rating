@@ -22,9 +22,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{id}")
-    public Review getById(@PathVariable Long movieId, @PathVariable Long id) {
-        log.debug("Endpoint getting the review by path variables - movieId: {}, and reviewId: {}", movieId, id);
-        return reviewService.getById(movieId, id);
+    public Review getById(@PathVariable Long id) {
+        log.debug("Endpoint getting the review by path variable reviewId: {}", id);
+        return reviewService.getById(id);
     }
 
     @PostMapping("/")
