@@ -6,13 +6,10 @@ import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -22,61 +19,52 @@ public class MovieRepositoryJpa implements MovieRepository{
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(readOnly = true)
     public Optional<Movie> findById(Long id) {
         log.debug("Finding movie by id - {}", id);
         return Optional.ofNullable(entityManager.find(Movie.class, id));
     }
 
-    @Transactional
     public void persist(Movie movie) {
         log.debug("Adding new movie to movies list with movie - {}", movie);
+        if(findById(movie.getId()).isPresent()) {
+            entityManager.merge(movie);
+        }
         entityManager.persist(movie);
     }
 
-    @Transactional
     public void delete(Movie movie) {
         log.debug("Deleting movie from list - {}", movie);
         entityManager.remove(movie);
     }
 
-    @Transactional(readOnly = true)
     public List<Movie> search(Genre genre, String title, LocalDate releasedBefore, LocalDate releasedAfter) {
-        log.debug("Finding movies by parameters - genre: {}, title: {}, releasedBefore: {}, releasedAfter: {}",
-                genre, title, releasedBefore, releasedAfter);
         var query = new StringBuilder();
-        query.append("select m from Movie m ");
-        class WhereClause<T> {
-            final String query;
-            final String param;
-            final T value;
-
-            WhereClause(String query, String param, T value) {
-                this.query = query;
-                this.param = param;
-                this.value = value;
-            }
-        }
-        var whereClauses = new ArrayList<WhereClause>();
+        query.append("select m from Movie m where 1=1 ");
         if (genre != null) {
-            whereClauses.add(new WhereClause("m.genre = :genre ", "genre", genre));
+            query.append("and m.genre = :genre ");
         }
         if (title != null) {
-            whereClauses.add(new WhereClause("m.title like :title ", "title", "%" + title + "%"));
+            query.append("and m.title like :title ");
         }
         if (releasedBefore != null) {
-            whereClauses.add(new WhereClause("m.releasedAt <= :releasedBefore ", "releasedBefore", releasedBefore));
+            query.append("and m.releasedAt <= :releasedBefore ");
         }
         if (releasedAfter != null) {
-            whereClauses.add(new WhereClause("m.releasedAt >= :releasedAfter ", "releasedAfter", releasedAfter));
+            query.append("and m.releasedAt >= :releasedAfter ");
         }
-        if (!whereClauses.isEmpty()) {
-            query.append("where ");
-        }
-        var whereClause = whereClauses.stream().map(w -> w.query).collect(Collectors.joining(" and "));
-        query.append(whereClause);
         TypedQuery<Movie> managerQuery = entityManager.createQuery(query.toString(), Movie.class);
-        whereClauses.forEach(w -> managerQuery.setParameter(w.param, w.value));
+        if (genre != null) {
+            managerQuery.setParameter("genre", genre);
+        }
+        if (title != null) {
+            managerQuery.setParameter("title", "%" + title + "%");
+        }
+        if (releasedBefore != null) {
+            managerQuery.setParameter("releasedBefore", releasedBefore);
+        }
+        if (releasedAfter != null) {
+            managerQuery.setParameter("releasedAfter", releasedAfter);
+        }
         return managerQuery.getResultList();
     }
 }
