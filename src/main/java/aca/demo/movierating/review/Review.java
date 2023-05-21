@@ -1,7 +1,9 @@
 package aca.demo.movierating.review;
 
+import aca.demo.movierating.movie.Movie;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +20,8 @@ public class Review {
     @EqualsAndHashCode.Include
     @Id
     Long id;
-    Long movieId;
+    @ManyToOne
+    Movie movie;
     Long userId;
     String description;
     double rating;
@@ -28,7 +31,7 @@ public class Review {
     public Review(CreateReview createReview) {
         log.debug("Creating new review with createReview - {}", createReview);
         this.id = createReview.getId();
-        this.movieId = createReview.getMovieId();
+        this.movie = createReview.getMovie();
         this.userId = createReview.getUserId();
         this.description = createReview.getDescription();
         this.rating = createReview.getRating();
