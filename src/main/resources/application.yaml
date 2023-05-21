@@ -11,3 +11,4 @@ spring:
       max-lifetime: 580000
   jpa:
     show-sql: true
+    open-in-view: false
