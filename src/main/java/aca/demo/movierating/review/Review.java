@@ -3,6 +3,7 @@ package aca.demo.movierating.review;
 import aca.demo.movierating.movie.Movie;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class Review {
     @Id
     Long id;
     @ManyToOne
+    @JoinColumn(name = "movie_id")
     Movie movie;
     Long userId;
     String description;
@@ -31,7 +33,6 @@ public class Review {
     public Review(CreateReview createReview) {
         log.debug("Creating new review with createReview - {}", createReview);
         this.id = createReview.getId();
-        this.movie = createReview.getMovie();
         this.userId = createReview.getUserId();
         this.description = createReview.getDescription();
         this.rating = createReview.getRating();
@@ -44,5 +45,10 @@ public class Review {
         this.userId = updateReview.getUserId();
         this.description = updateReview.getDescription();
         this.rating = updateReview.getRating();
+        this.updatedAt = updateReview.getUpdatedAt();
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 }
