@@ -26,7 +26,7 @@ public class Review {
     Movie movie;
     Long userId;
     String description;
-    double rating;
+    Double rating;
     Instant createdAt;
     Instant updatedAt;
 

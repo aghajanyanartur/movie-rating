@@ -51,8 +51,8 @@ public class ReviewController {
                                @RequestParam(required = false) Instant updatedBefore,
                                @RequestParam(required = false) Instant updatedAfter,
                                @RequestParam(required = false) Long userId,
-                               @RequestParam(required = false) double ratingHigherThan,
-                               @RequestParam(required = false) double ratingLowerThan) {
+                               @RequestParam(required = false) Double ratingHigherThan,
+                               @RequestParam(required = false) Double ratingLowerThan) {
         log.debug("Endpoint searching reviews by parameters - description: {}, updatedBefore: {}, updatedAfter: {}, userId: {}, ratingHigherThan: {}, ratingLowerThan: {}",
                 description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);
         return reviewService.search(description, updatedBefore, updatedAfter, userId, ratingHigherThan, ratingLowerThan);

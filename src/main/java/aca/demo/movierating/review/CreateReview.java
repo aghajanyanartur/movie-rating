@@ -15,6 +15,6 @@ public class CreateReview {
     Long movieId;
     Long userId;
     String description;
-    double rating;
+    Double rating;
     Instant createdAt;
 }
