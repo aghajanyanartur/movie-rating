@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,15 +24,30 @@ public class Review {
 
     @EqualsAndHashCode.Include
     @Id
-    Long id;
+    private Long id;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "movie_id")
-    Movie movie;
-    Long userId;
-    String description;
-    Double rating;
-    Instant createdAt;
-    Instant updatedAt;
+    private Movie movie;
+
+    @NotNull
+    private Long userId;
+
+    @NotNull
+    @Size(max = 1000)
+    private String description;
+
+    @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "10.0")
+    private Double rating;
+
+    @NotNull
+    private Instant createdAt;
+
+    @NotNull
+    private Instant updatedAt;
 
     public Review(CreateReview createReview) {
         log.debug("Creating new review with createReview - {}", createReview);
