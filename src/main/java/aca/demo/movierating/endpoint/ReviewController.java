@@ -4,6 +4,7 @@ import aca.demo.movierating.review.CreateReview;
 import aca.demo.movierating.review.Review;
 import aca.demo.movierating.review.ReviewService;
 import aca.demo.movierating.review.UpdateReview;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,14 @@ public class ReviewController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> create(@RequestBody CreateReview createReview) {
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateReview createReview) {
         log.debug("Endpoint creating new review with createReview - {}", createReview);
         reviewService.create(createReview);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @PutMapping("/")
-    public void update(@PathVariable Long id, @RequestBody UpdateReview updateReview) {
+    public void update(@PathVariable Long id, @RequestBody @Valid UpdateReview updateReview) {
         log.debug("Endpoint updating a review using path variables - reviewId: {}, and updateReview: {}", id, updateReview);
         reviewService.update(id, updateReview);
     }

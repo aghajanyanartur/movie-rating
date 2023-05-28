@@ -1,6 +1,7 @@
 package aca.demo.movierating.endpoint;
 
 import aca.demo.movierating.movie.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,14 +25,14 @@ public class MovieController {
     }
 
     @PostMapping("/movies")
-    public ResponseEntity create(@RequestBody CreateMovie createMovie) {
+    public ResponseEntity create(@RequestBody @Valid CreateMovie createMovie) {
         log.debug("Endpoint creating a new movie - {}", createMovie);
         movieService.create(createMovie);
         return ResponseEntity.status(HttpStatus.CREATED).body(null);
     }
 
     @PutMapping("/movies/{id}")
-    public void update(@PathVariable Long id, @RequestBody UpdateMovie updateMovie) {
+    public void update(@PathVariable Long id, @RequestBody @Valid UpdateMovie updateMovie) {
         log.debug("Endpoint updating a movie using path variable id - {}, and updateMovie - {}", id, updateMovie);
         movieService.update(id, updateMovie);
     }
