@@ -1,14 +1,13 @@
 package aca.demo.movierating.movie;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import aca.demo.movierating.review.Review;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @ToString
 @Getter
@@ -20,27 +19,30 @@ public class Movie {
 
     @EqualsAndHashCode.Include
     @Id
-    Long id;
+    private Long id;
 
     @NotNull
     @Size(max = 100)
-    String title;
+    private String title;
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    Genre genre;
+    private Genre genre;
 
     @NotNull
-    LocalDate releasedAt;
+    private LocalDate releasedAt;
 
     @NotNull
     @Size(min = 2, max = 50)
-    String director;
+    private String director;
 
     @NotNull
     @DecimalMin(value = "0.0")
     @DecimalMax(value = "10.0")
-    double rating;
+    private double rating;
+
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews;
 
     public Movie(CreateMovie createMovie) {
         log.debug("Constructing movie with createMovie - {}", createMovie);
