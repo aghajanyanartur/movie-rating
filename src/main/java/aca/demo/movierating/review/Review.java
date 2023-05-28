@@ -25,28 +25,13 @@ public class Review {
     @EqualsAndHashCode.Include
     @Id
     private Long id;
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
-    @NotNull
     private Long userId;
-
-    @NotNull
-    @Size(max = 1000)
     private String description;
-
-    @NotNull
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "10.0")
     private Double rating;
-
-    @NotNull
     private Instant createdAt;
-
-    @NotNull
     private Instant updatedAt;
 
     public Review(CreateReview createReview) {
