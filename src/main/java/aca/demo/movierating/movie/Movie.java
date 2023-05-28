@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +21,25 @@ public class Movie {
     @EqualsAndHashCode.Include
     @Id
     Long id;
+
+    @NotNull
+    @Size(max = 100)
     String title;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     Genre genre;
+
+    @NotNull
     LocalDate releasedAt;
+
+    @NotNull
+    @Size(min = 2, max = 50)
     String director;
+
+    @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "10.0")
     double rating;
 
     public Movie(CreateMovie createMovie) {
