@@ -20,25 +20,11 @@ public class Movie {
     @EqualsAndHashCode.Include
     @Id
     private Long id;
-
-    @NotNull
-    @Size(max = 100)
     private String title;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Genre genre;
-
-    @NotNull
     private LocalDate releasedAt;
-
-    @NotNull
-    @Size(min = 2, max = 50)
     private String director;
-
-    @NotNull
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "10.0")
     private double rating;
 
     @OneToMany(mappedBy = "movie")
