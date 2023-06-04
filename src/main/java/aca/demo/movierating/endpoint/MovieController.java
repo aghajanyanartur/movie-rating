@@ -20,7 +20,7 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping("/movies/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER_AUTHORITY')")
     public Movie getById(@PathVariable Long id) {
         log.debug("Endpoint getting movie by path variable id - {}", id);
         return movieService.getById(id);

@@ -30,7 +30,7 @@ public class MovieUserDetailsService implements UserDetailsService {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .roles("USER")
-                .authorities("USER_AUTHORITIES")
+                .authorities("USER_AUTHORITY")
                 .build();
     }
 }
