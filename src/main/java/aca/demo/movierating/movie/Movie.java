@@ -2,7 +2,6 @@ package aca.demo.movierating.movie;
 
 import aca.demo.movierating.review.Review;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
